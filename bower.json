@@ -1,0 +1,20 @@
+{
+  "name": "js-skull-ego",
+  "private": true,
+  "dependencies": {
+    "jquery": "~2.1.1",
+    "modernizr": "~2.8.1",
+    "underscore": "~1.8.3",
+    "threejs": "*",
+    "stats.js": "*",
+    "dat-gui": "~0.5.1",
+    "gsap": "~1.16.1",
+    "threex.universalloader": "*",
+    "threex.windowresize": "*"
+  },
+  "overrides": {
+    "dat-gui": {
+      "main": "build/dat.gui.js"
+    }
+  }
+}
