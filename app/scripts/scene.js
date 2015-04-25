@@ -29,9 +29,9 @@ function Scene() {
   // create scene, start animation cycle
   this.createScene( function(){
 
-    // init animation ticker
-    TweenMax.ticker.fps(60);
-    TweenMax.ticker.addEventListener( 'tick', this.animate.bind( this ) );
+    // callback delegate
+    if( this.delegate && this.delegate.onSceneLoadComplete )
+      this.delegate.onSceneLoadComplete();
 
   }.bind( this ) );
 }
@@ -228,8 +228,6 @@ Scene.prototype = {
 
   // mouse moved
   mousemove: function( event ) {
-    event.preventDefault();
-
     this.mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
     this.mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 
@@ -301,7 +299,7 @@ Scene.prototype = {
   // animate cycle
   animate: function() {
 
-    this.render();
+
   },
 
 

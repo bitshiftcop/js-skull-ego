@@ -22,7 +22,11 @@
   <body>
     <div id="scene"></div>
     <div id="info-layer">
-        <div id="info-box">click m3</div>
+        <canvas id="info-canvas"></canvas>
+        <div id="info-box">
+            I'm the eg0. I suck.
+            <div id="info-next">next &gt;</div>
+        </div>
     </div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
@@ -56,6 +60,7 @@
     <!-- endbuild -->
 
     <!-- build:js scripts/main.js -->
+    <script src="scripts/infolayer.js"></script>
     <script src="scripts/scene.js"></script>
     <script src="scripts/application.js"></script>
     <script src="scripts/main.js"></script>
