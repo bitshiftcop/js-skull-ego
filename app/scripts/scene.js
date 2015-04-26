@@ -1,16 +1,16 @@
 'use strict';
 
-function Scene() {
+function Scene( colorScheme ) {
 
   // consts
   this.CLEAR_COLOR = 0x000000;
   this.AMBI_LIGHT_COLOR = 0xffffff;
-  this.SKULL_FILM_COLOR = 0x41008c;
-  this.SKULL_WIRE_COLOR = 0x00a9ff;
-  this.EGO_COLOR = 0xd2ff00;
 
   // delegate
   this.delegate = null;
+
+  // color scheme
+  this.colorScheme = colorScheme;
 
   // camera, scene, renderer
   this.camera = null;
@@ -53,7 +53,6 @@ Scene.prototype = {
       materialFolder,
       gui;
 
-
     // create camera
     this.camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 10000 );
     this.camera.position.z = 500;
@@ -86,13 +85,13 @@ Scene.prototype = {
 
     // skull materials
     skullFilmMaterial = new THREE.MeshLambertMaterial({
-      color: this.SKULL_FILM_COLOR,
+      color: this.colorScheme.film,
       shading: THREE.SmoothShading,
       transparent:true
     });
 
     skullWireMaterial = new THREE.MeshLambertMaterial({
-      color: this.SKULL_WIRE_COLOR,
+      color: this.colorScheme.wire,
       shading: THREE.SmoothShading,
       transparent:true,
       wireframe: true
@@ -102,7 +101,7 @@ Scene.prototype = {
     // ego geometry & material
     egoGeometry = new THREE.IcosahedronGeometry( 35, 0 );
     egoMaterial = new THREE.MeshLambertMaterial({
-      color: this.EGO_COLOR,
+      color: this.colorScheme.ego,
       shading: THREE.SmoothShading,
       wireframe: true
     });
@@ -115,7 +114,7 @@ Scene.prototype = {
       // set skull
       this.skull = obj;
       this.skull.scale.set(0.75, 0.75, 0.75);
-      //this.skull.position.setX(-150);
+      this.skull.position.setX(-100);
       this.skull.rotation.y = -0.25;
 
       // traverse skull child objects
@@ -241,7 +240,7 @@ Scene.prototype = {
 
   next: function ( ) {
 
-    var newRotation = this.skull.rotation.y + (360 * 5 * Math.PI / 180);
+    var newRotation = this.skull.rotation.y + (360 * 2 * Math.PI / 180);
 
     TweenMax.to(
       this.skull.rotation,
@@ -280,7 +279,7 @@ Scene.prototype = {
       this.skullFilmMesh.material ],
       0.5, {
         delay:1.15,
-        opacity:0.35,
+        opacity:0.55,
         ease:Sine.easeInOut
       }
     );
@@ -289,7 +288,7 @@ Scene.prototype = {
       this.skullWireMesh.material ],
       0.5, {
         delay:1.15,
-        opacity:0.65,
+        opacity:0.75,
         ease:Sine.easeInOut
       }
     );

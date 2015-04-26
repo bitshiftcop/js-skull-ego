@@ -1,29 +1,87 @@
 'use strict';
 
 function Application( options ) {
-  this.infoLayer = null;
-  this.scene = null;
 
+  // setting default values
   this.defaults = {
   };
 
+  // merge with constructor
   this.settings = _.extend(this.defaults, options);
 
+  // variables
+  this.seamlessLoop = null;
+  this.infoLayer = null;
+  this.scene = null;
+
+  // load statusses
+  this.seamlessLoopLoaded = false;
+  this.sceneLoaded = false;
+
+  // colors
+  this.activeColorScheme = null;
+  this.colorSchemes = [
+    { film: 0x41008c, wire: 0x00a9ff, ego: 0xd2ff00 },
+    { film: 0xe85f00, wire: 0x0000ff, ego: 0xffffff }
+  ];
+
+  // wait for dom ready event
   $(document).ready( this.init.bind( this ) );
 }
 
 Application.prototype = {
   init: function() {
 
+    // active color scheme
+    this.activeColorScheme = this.colorSchemes[Math.round(Math.random() * (this.colorSchemes.length - 1))];
+
+    // loop
+    this.seamlessLoop = new SeamlessLoop();
+    this.seamlessLoop.addUri('audio/crackle.wav', 13586, 'crackle');
+    this.seamlessLoop.callback(function(){
+      this.seamlessLoopLoadComplete();
+    }.bind( this ));
+
     // create info layer
-    this.infoLayer = new InfoLayer();
+    this.infoLayer = new InfoLayer( this.activeColorScheme );
+    this.infoLayer.delegate = this;
 
     // create scene
-    this.scene = new Scene();
+    this.scene = new Scene( this.activeColorScheme );
     this.scene.delegate = this;
 
     // window resize
     $(window).resize( this.resize.bind(this) );
+  },
+
+  seamlessLoopLoadComplete: function() {
+    this.seamlessLoopLoaded = true;
+    this.verifyAssetLoad();
+  },
+
+  verifyAssetLoad: function() {
+    if( this.seamlessLoopLoaded &&
+          this.sceneLoaded )
+      this.start();
+  },
+
+  start: function() {
+    // resize once to trigger sizing logic
+    this.resize();
+
+    // trigger next info logic once
+    this.infoLayer.triggerNextInfo();
+
+    // add mouse move listener
+    $('body').mousemove( function() {
+      event.preventDefault();
+      this.scene.mousemove( event );
+      this.infoLayer.mousemove( event );
+    }.bind( this ) );
+
+    // init animation ticker
+    TweenMax.ticker.fps(60);
+    TweenMax.ticker.addEventListener( 'tick', this.tick.bind( this ) );
   },
 
   resize: function() {
@@ -39,23 +97,13 @@ Application.prototype = {
     this.infoLayer.render();
   },
 
+  onInfoLayerShowNext: function() {
+    this.scene.next();
+  },
+
   onSceneLoadComplete: function() {
-
-    // add mouse move listener
-    $('body').mousemove( function() {
-      event.preventDefault();
-      this.scene.mousemove( event );
-      this.infoLayer.mousemove( event );
-    }.bind( this ) );
-
-    // click handler
-    $('#info-box #info-next').click( function() {
-      this.scene.next();
-    }.bind( this ) );
-
-    // init animation ticker
-    TweenMax.ticker.fps(60);
-    TweenMax.ticker.addEventListener( 'tick', this.tick.bind( this ) );
+    this.sceneLoaded = true;
+    this.verifyAssetLoad();
   },
 
   onSceneEgoPositionUpdate: function(position) {
