@@ -4,6 +4,7 @@ function Application( options ) {
 
   // setting default values
   this.defaults = {
+    debug: true
   };
 
   // merge with constructor
@@ -21,8 +22,9 @@ function Application( options ) {
   // colors
   this.activeColorScheme = null;
   this.colorSchemes = [
-    { film: 0x41008c, wire: 0x00a9ff, ego: 0xd2ff00 },
-    { film: 0xe85f00, wire: 0x0000ff, ego: 0xffffff }
+    { film: 0x4d00a7, wire: 0x00b3ff, ego: 0xff8700 }, // purple, light blue, orange
+    { film: 0xe85f00, wire: 0x0000ff, ego: 0xffffff }, // orange, blue, white
+    { film: 0x18cf00, wire: 0x6900ff, ego: 0xd2ff00 }  // geen, purple, yellow-greenish
   ];
 
   // wait for dom ready event
@@ -43,11 +45,11 @@ Application.prototype = {
     }.bind( this ));
 
     // create info layer
-    this.infoLayer = new InfoLayer( this.activeColorScheme );
+    this.infoLayer = new InfoLayer( this.settings, this.activeColorScheme );
     this.infoLayer.delegate = this;
 
     // create scene
-    this.scene = new Scene( this.activeColorScheme );
+    this.scene = new Scene( this.settings, this.activeColorScheme );
     this.scene.delegate = this;
 
     // window resize
@@ -66,8 +68,13 @@ Application.prototype = {
   },
 
   start: function() {
+
     // resize once to trigger sizing logic
     this.resize();
+
+    // start sound
+    if(!this.settings.debug)
+      this.seamlessLoop.start('crackle');
 
     // trigger next info logic once
     this.infoLayer.triggerNextInfo();

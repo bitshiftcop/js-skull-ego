@@ -1,6 +1,6 @@
 'use strict';
 
-function Scene( colorScheme ) {
+function Scene( settings, colorScheme ) {
 
   // consts
   this.CLEAR_COLOR = 0x000000;
@@ -10,6 +10,7 @@ function Scene( colorScheme ) {
   this.delegate = null;
 
   // color scheme
+  this.settings = settings;
   this.colorScheme = colorScheme;
 
   // camera, scene, renderer
@@ -55,7 +56,7 @@ Scene.prototype = {
 
     // create camera
     this.camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 10000 );
-    this.camera.position.z = 500;
+    this.camera.position.z = 450;
     this.camera.position.y = 25;
 
 
@@ -172,56 +173,54 @@ Scene.prototype = {
     // mouse
     this.mouse = new THREE.Vector2();
 
+    // create debug gui
+    if(this.settings.debug) {
+      // create gui
+      guiParams = {
+        ambiLightColor: ambiLight.color.getHex(),
+        skullFilmMaterialColor: skullFilmMaterial.color.getHex(),
+        skullWireMaterialColor: skullWireMaterial.color.getHex(),
+        egoMaterialColor: egoMaterial.color.getHex()
+      };
 
-    // create gui
-    guiParams = {
-      ambiLightColor: ambiLight.color.getHex(),
-      skullFilmMaterialColor: skullFilmMaterial.color.getHex(),
-      skullWireMaterialColor: skullWireMaterial.color.getHex(),
-      egoMaterialColor: egoMaterial.color.getHex()
-    };
+      gui = new dat.GUI();
 
-    gui = new dat.GUI();
+      lightsFolder = gui.addFolder( 'Lights' );
 
-    lightsFolder = gui.addFolder( 'Lights' );
+      lightsFolder
+        .add( ambiLight, 'visible' )
+        .name( 'Enable Ambient' );
 
-    lightsFolder
-      .add( ambiLight, 'visible' )
-      .name( 'Enable Ambient' );
+      lightsFolder
+        .addColor( guiParams, 'ambiLightColor' )
+        .name( 'Ambient Color' )
+        .onChange(function( color ){
+          ambiLight.color.setHex( color );
+        }.bind( this ) );
 
-    lightsFolder
-      .addColor( guiParams, 'ambiLightColor' )
-      .name( 'Ambient Color' )
-      .onChange(function( color ){
-        ambiLight.color.setHex( color );
-      }.bind( this ) );
+      materialFolder = gui.addFolder( 'Materials' );
 
-    //lightsFolder.open();
+      materialFolder
+        .addColor( guiParams, 'skullFilmMaterialColor' )
+        .name( 'Skull Film Color' )
+        .onChange( function( color ){
+          skullFilmMaterial.color.setHex( color );
+        }.bind( this ) );
 
-    materialFolder = gui.addFolder( 'Materials' );
+      materialFolder
+        .addColor( guiParams, 'skullWireMaterialColor' )
+        .name( 'Skull Wire Color' )
+        .onChange( function( color ){
+          skullWireMaterial.color.setHex( color );
+        }.bind( this ) );
 
-    materialFolder
-      .addColor( guiParams, 'skullFilmMaterialColor' )
-      .name( 'Skull Film Color' )
-      .onChange( function( color ){
-        skullFilmMaterial.color.setHex( color );
-      }.bind( this ) );
-
-    materialFolder
-      .addColor( guiParams, 'skullWireMaterialColor' )
-      .name( 'Skull Wire Color' )
-      .onChange( function( color ){
-        skullWireMaterial.color.setHex( color );
-      }.bind( this ) );
-
-    materialFolder
-      .addColor( guiParams, 'egoMaterialColor' )
-      .name( 'Ego Color' )
-      .onChange( function( color ){
-        egoMaterial.color.setHex( color );
-      }.bind( this ) );
-
-    //materialFolder.open();
+      materialFolder
+        .addColor( guiParams, 'egoMaterialColor' )
+        .name( 'Ego Color' )
+        .onChange( function( color ){
+          egoMaterial.color.setHex( color );
+        }.bind( this ) );
+    }
   },
 
 
@@ -305,11 +304,10 @@ Scene.prototype = {
   // render cycle
   render: function() {
 
+    // rotate ego
     this.ego.rotation.x += 0.075;
 
-    //this.skullFilmMesh.material.opacity = 0.25 + ( Math.abs( this.mouse.x ) / 5 );
-    //this.skullWireMesh.material.opacity = 0.65 + ( Math.abs( this.mouse.x ) / 5 );
-
+    // look at center of the scene
     this.camera.lookAt( this.scene.position );
 
     // notify delegate about ego position
@@ -319,6 +317,7 @@ Scene.prototype = {
       );
     }
 
+    // magic!
     this.renderer.render( this.scene, this.camera );
   }
 };

@@ -1,11 +1,12 @@
 'use strict';
 
-function InfoLayer( colorScheme ) {
+function InfoLayer( settings, colorScheme ) {
 
   // delegate
   this.delegate = null;
 
   // color
+  this.settings = settings
   this.colorScheme = colorScheme;
 
   // elements
@@ -28,17 +29,9 @@ function InfoLayer( colorScheme ) {
 
   // data
   this.data = [{
-    title: '"Title 1"',
-    desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eleifend turpis mi, ut imperdiet mi posuere nec. Vestibulum finibus tempor gravida. Aenean lacinia odio et gravida luctus. Nulla posuere vel felis blandit varius.',
-    link: 'http://google.com'
-  }, {
-    title: '"Title 2"',
-    desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eleifend turpis mi, ut imperdiet mi posuere nec. Vestibulum finibus tempor gravida. Aenean lacinia odio et gravida luctus. Nulla posuere vel felis blandit varius.',
-    link: 'http://google.com'
-  }, {
-    title: '"Title 3"',
-    desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eleifend turpis mi, ut imperdiet mi posuere nec. Vestibulum finibus tempor gravida. Aenean lacinia odio et gravida luctus. Nulla posuere vel felis blandit varius.',
-    link: 'http://google.com'
+    title: '"the ego"',
+    desc: 'a drunken stung monkey, your limitations. numb it down or keep chasing down genuine contentment till the day you die.',
+    link: 'https://www.youtube.com/watch?v=5WSlkzz2_Bk'
   }];
 
   // init
@@ -55,11 +48,6 @@ InfoLayer.prototype = {
     // set colors
     var filmColor = this.parseColor(this.colorScheme.film);
     var wireColor = this.parseColor(this.colorScheme.wire);
-
-    //this.$box.css('background-color', this.convertHexToRgba(filmColor, 75));
-    //this.$box.css('border-color', this.convertHexToRgba(filmColor, 85));
-    //this.$box.css('color', 'rgba(255, 255, 255, 0.5)');
-
 
     // get canvas context
     this.context = this.$canvas[ 0 ].getContext( '2d' );
