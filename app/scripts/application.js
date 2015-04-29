@@ -11,12 +11,15 @@ function Application( options ) {
   this.settings = _.extend(this.defaults, options);
 
   // variables
-  this.seamlessLoop = null;
+  this.sound = null;
   this.infoLayer = null;
   this.scene = null;
 
+  // audioprocess nodes
+  this.audioScriptNode = null;
+
   // load statusses
-  this.seamlessLoopLoaded = false;
+  this.soundLoaded = false;
   this.sceneLoaded = false;
 
   // colors
@@ -37,11 +40,9 @@ Application.prototype = {
     // active color scheme
     this.activeColorScheme = this.colorSchemes[Math.round(Math.random() * (this.colorSchemes.length - 1))];
 
-    // loop
-    this.seamlessLoop = new SeamlessLoop();
-    this.seamlessLoop.addUri('audio/crackle.wav', 13586, 'crackle');
-    this.seamlessLoop.callback(function(){
-      this.seamlessLoopLoadComplete();
+    this.sound = new buzz.sound("audio/crackle.mp3", {preload:true, autoplay:false, loop:true, volume:100});
+    this.sound.bind('loadeddata', function(){
+      this.soundLoadComplete();
     }.bind( this ));
 
     // create info layer
@@ -56,14 +57,13 @@ Application.prototype = {
     $(window).resize( this.resize.bind(this) );
   },
 
-  seamlessLoopLoadComplete: function() {
-    this.seamlessLoopLoaded = true;
+  soundLoadComplete: function() {
+    this.soundLoaded = true;
     this.verifyAssetLoad();
   },
 
   verifyAssetLoad: function() {
-    if( this.seamlessLoopLoaded &&
-          this.sceneLoaded )
+    if( this.soundLoaded && this.sceneLoaded )
       this.start();
   },
 
@@ -73,8 +73,12 @@ Application.prototype = {
     this.resize();
 
     // start sound
-    if(!this.settings.debug)
-      this.seamlessLoop.start('crackle');
+    this.sound.play();
+    if(this.settings.debug)
+      this.sound.mute();
+
+    // create analyzers
+    this.monitorVolume();
 
     // trigger next info logic once
     this.infoLayer.triggerNextInfo();
@@ -94,6 +98,53 @@ Application.prototype = {
   resize: function() {
     if(this.infoLayer)
       this.infoLayer.resize();
+  },
+
+  monitorVolume: function() {
+
+    var AudioContext = (window.AudioContext ||
+      window.webkitAudioContext ||
+      window.mozAudioContext ||
+      window.oAudioContext ||
+      window.msAudioContext);
+
+    var context = new AudioContext();
+
+    // setup a javascript node
+    this.audioScriptNode = context.createScriptProcessor(2048, 1, 1);
+    this.audioScriptNode.connect(context.destination);
+
+    // setup a analyzer
+    var analyser = context.createAnalyser();
+    analyser.smoothingTimeConstant = 0.3;
+    analyser.fftSize = 1024;
+    analyser.connect(this.audioScriptNode);
+
+    var sourceNode = context.createMediaElementSource(this.sound.sound);
+    sourceNode.connect(analyser);
+    sourceNode.connect(context.destination);
+
+    this.audioScriptNode.onaudioprocess = function() {
+      this.processAudioFrame(analyser);
+    }.bind( this );
+  },
+
+  processAudioFrame: function(analyser) {
+
+    var array =  new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(array);
+
+    var average = this.getAverageVolume(array)
+    this.scene.updateOpacity(average / 100);
+  },
+
+  getAverageVolume: function(array) {
+    var values = 0,
+      average,
+      length = array.length;
+    for (var i = 0; i < length; i++)
+      values += array[i];
+    return values / length;
   },
 
   tick: function() {

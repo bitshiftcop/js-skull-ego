@@ -27,6 +27,9 @@ function Scene( settings, colorScheme ) {
   this.skullWireMesh = null;
   this.ego = null;
 
+  // flicker
+  this.allowFlicker = false;
+
   // create scene, start animation cycle
   this.createScene( function(){
 
@@ -238,7 +241,7 @@ Scene.prototype = {
 
 
   next: function ( ) {
-
+    this.allowFlicker = false;
     var newRotation = this.skull.rotation.y + (360 * 2 * Math.PI / 180);
 
     TweenMax.to(
@@ -279,7 +282,10 @@ Scene.prototype = {
       0.5, {
         delay:1.15,
         opacity:0.55,
-        ease:Sine.easeInOut
+        ease:Sine.easeInOut,
+        onComplete: function(){
+          this.allowFlicker = true;
+        }.bind( this )
       }
     );
 
@@ -289,6 +295,24 @@ Scene.prototype = {
         delay:1.15,
         opacity:0.75,
         ease:Sine.easeInOut
+      }
+    );
+  },
+
+  updateOpacity: function( val ) {
+    if(!this.allowFlicker) return;
+
+    TweenMax.to([
+      this.skullFilmMesh.material ],
+      0.1, {
+        opacity:0.55 + val
+      }
+    );
+
+    TweenMax.to([
+      this.skullWireMesh.material ],
+      0.1, {
+        opacity:0.75 + val
       }
     );
   },

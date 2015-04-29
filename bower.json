@@ -11,7 +11,8 @@
     "gsap": "~1.16.1",
     "threex.universalloader": "*",
     "threex.windowresize": "*",
-    "threex.objcoord": "*"
+    "threex.objcoord": "*",
+    "buzz": "~1.1.10"
   },
   "overrides": {
     "dat-gui": {
