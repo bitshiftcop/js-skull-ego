@@ -2,4 +2,4 @@
 
 // Create the application
 //new Application({debug:false});
-new Application();
+new Application({debug:false});

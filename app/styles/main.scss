@@ -78,7 +78,7 @@ body {
   }
 }
 
-#rich-content {
+#rich-content, .no-advanced-webgl #rich-content {
   visibility:hidden;
 
   .webgl & {
@@ -86,7 +86,7 @@ body {
   }
 }
 
-#not-supported {
+.no-advanced-webgl #not-supported {
   background-color:#151515;
   color:#fff;
   font-size:20px;

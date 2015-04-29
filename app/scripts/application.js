@@ -37,6 +37,11 @@ function Application( options ) {
 Application.prototype = {
   init: function() {
 
+    if (!Detector.webgl) {
+      $('html').addClass('no-advanced-webgl');
+      return;
+    }
+
     // active color scheme
     this.activeColorScheme = this.colorSchemes[Math.round(Math.random() * (this.colorSchemes.length - 1))];
 
