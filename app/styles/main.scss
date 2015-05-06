@@ -38,12 +38,13 @@ body {
   h1 {
     color:#222;
     font-weight:bold;
-    font-style:italic !important;
     margin:15px 0;
+    margin-left:-1px;
   }
 
   #desc {
     margin-bottom:15px;
+    font-style:italic !important;
   }
 
   a, a:link, a:visited, a:hover {

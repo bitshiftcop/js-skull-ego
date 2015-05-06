@@ -40,7 +40,7 @@ gulp.task('html', ['styles'], function () {
     .pipe($.if('*.css', $.csso()))
     .pipe(assets.restore())
     .pipe($.useref())
-    .pipe($.if('*.html', $.minifyHtml({conditionals: true, loose: true})))
+    //.pipe($.if('*.html', $.minifyHtml({conditionals: true, loose: true})))
     .pipe(gulp.dest('dist'));
 });
 
@@ -70,6 +70,15 @@ gulp.task('extras', function () {
     '!app/*.html'
   ], {
     dot: true
+  }).pipe(gulp.dest('dist'));
+});
+
+gulp.task('assets', function () {
+  return gulp.src([
+    'app/audio/**/*',
+    'app/obj/**/*'
+  ], {
+    base:'app'
   }).pipe(gulp.dest('dist'));
 });
 
@@ -117,7 +126,7 @@ gulp.task('wiredep', function () {
     .pipe(gulp.dest('app'));
 });
 
-gulp.task('build', ['jshint', 'html', 'images', 'fonts', 'extras'], function () {
+gulp.task('build', ['html', 'images', 'fonts', 'extras', 'assets'], function () {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 

@@ -29,9 +29,25 @@ function InfoLayer( settings, colorScheme ) {
 
   // data
   this.data = [{
-    title: '"the ego"',
-    desc: 'a drunken stung monkey, your limitations. numb it down or keep chasing down genuine contentment till the day you die.',
-    link: 'https://www.youtube.com/watch?v=5WSlkzz2_Bk'
+    title: 'all the time',
+    desc: "i can't make this any clearer<br/>i can't make this any simpler<br/>still passin' through my fingers<br/>i bet you get this all the time",
+    link: 'https://soundcloud.com/colorante/burial-four-tet-thom-yorke-ego',
+    label: 'soundcloud'
+  }, {
+    title: 'expensive',
+    desc: 'the ego, is the most expensive<br/>demon. the ego. the ego, is the<br/>most expensive demon. the ego.',
+    link: 'https://soundcloud.com/otherpeoplerecords/nicolas-jaar-theatre-roosevelt',
+    label: 'soundcloud'
+  }, {
+    title: 'self-preservational',
+    desc: "it's what you <u>think</u> reality is.<br/>you, and your notion of you,<br/>is highly illusory and fictitious.",
+    link: 'https://www.youtube.com/watch?v=xqLIXz0k_qM',
+    label: 'watch'
+  }, {
+    title:'confusing',
+    desc:'the ego is baffling and mystifying, and if you don’t understand it, and educate it, it will be your master, instead of the servant it is meant to be.',
+    link: 'http://blog.skillsforawakening.com/blog/making-friends-with-your-ego',
+    label: 'read'
   }];
 
   // init
@@ -61,6 +77,17 @@ InfoLayer.prototype = {
     this.$box.find( '#next' ).click( function() {
       this.triggerNextInfo();
     }.bind( this ) );
+
+    this.$box.find( 'a' ).click( function(event) {
+      event.preventDefault();
+
+      var url = this.$box.find( 'a' ).attr('href');
+      setTimeout(function(){
+        window.open(url);
+      }, 500);
+
+      this.notifyLinkClicked();
+    }.bind( this ));
   },
 
   parseColor: function(color) {
@@ -101,12 +128,18 @@ InfoLayer.prototype = {
     );
   },
 
+  notifyLinkClicked: function() {
+    if(this.delegate && this.delegate.onInfoLayerLinkClicked)
+      this.delegate.onInfoLayerLinkClicked();
+  },
+
   updateInfo: function() {
     var data = this.data[this.index % this.data.length];
 
     this.$box.find('h1').html(data.title);
     this.$box.find('#desc').html(data.desc);
     this.$box.find('a').attr('href', data.link);
+    this.$box.find('a').html(data.label);
   },
 
   setOrigin: function( x, y ) {

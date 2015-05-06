@@ -95,6 +95,22 @@ Application.prototype = {
       this.infoLayer.mousemove( event );
     }.bind( this ) );
 
+    // add windows focus/blur listener
+    $(window).on("blur focus", function(e) {
+      var prevType = $(this).data("prevType");
+
+      if (prevType != e.type) {   //  reduce double fire issues
+        switch (e.type) {
+          case "focus":
+            if(this.sound)
+              this.sound.fadeTo(100, 500);
+            break;
+        }
+      }
+
+      $(this).data("prevType", e.type);
+    }.bind( this ));
+
     // init animation ticker
     TweenMax.ticker.fps(60);
     TweenMax.ticker.addEventListener( 'tick', this.tick.bind( this ) );
@@ -162,6 +178,11 @@ Application.prototype = {
 
   onInfoLayerShowNext: function() {
     this.scene.next();
+  },
+
+  onInfoLayerLinkClicked: function() {
+    if(this.sound)
+      this.sound.fadeTo(0, 250);
   },
 
   onSceneLoadComplete: function() {
