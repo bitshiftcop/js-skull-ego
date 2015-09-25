@@ -2,13 +2,13 @@
   "name": "js-ego-machine",
   "private": true,
   "dependencies": {
-    "jquery": "~2.1.1",
+    "jquery": "~2.1.4",
     "modernizr": "~2.8.1",
     "underscore": "~1.8.3",
     "threejs": "*",
     "stats.js": "*",
     "dat-gui": "~0.5.1",
-    "gsap": "~1.16.1",
+    "gsap": "~1.18.0",
     "threex.universalloader": "*",
     "threex.windowresize": "*",
     "threex.objcoord": "*",
@@ -18,5 +18,9 @@
     "dat-gui": {
       "main": "build/dat.gui.js"
     }
+  },
+  "resolutions": {
+    "modernizr": "~3.0.0",
+    "gsap": "~1.18.0"
   }
 }
