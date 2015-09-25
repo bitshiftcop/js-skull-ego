@@ -58,7 +58,7 @@ Scene.prototype = {
       gui;
 
     // create camera
-    this.camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 10000 );
+    this.camera = new THREE.PerspectiveCamera( 65, window.innerWidth / window.innerHeight, 1, 10000 );
     this.camera.position.z = 450;
     this.camera.position.y = 25;
 
@@ -90,13 +90,11 @@ Scene.prototype = {
     // skull materials
     skullFilmMaterial = new THREE.MeshLambertMaterial({
       color: this.colorScheme.film,
-      shading: THREE.SmoothShading,
       transparent:true
     });
 
     skullWireMaterial = new THREE.MeshLambertMaterial({
       color: this.colorScheme.wire,
-      shading: THREE.SmoothShading,
       transparent:true,
       wireframe: true
     });
@@ -106,7 +104,6 @@ Scene.prototype = {
     egoGeometry = new THREE.IcosahedronGeometry( 35, 0 );
     egoMaterial = new THREE.MeshLambertMaterial({
       color: this.colorScheme.ego,
-      shading: THREE.SmoothShading,
       wireframe: true
     });
 
@@ -157,10 +154,10 @@ Scene.prototype = {
 
 
     // renderer
-    this.renderer = new THREE.WebGLRenderer( { antialias: true } );
+    this.renderer = new THREE.WebGLRenderer( { antialias: false, alpha: true } );
     this.renderer.setPixelRatio( window.devicePixelRatio );
     this.renderer.setSize( window.innerWidth, window.innerHeight );
-    this.renderer.setClearColor( this.CLEAR_COLOR );
+    this.renderer.setClearColor( this.CLEAR_COLOR, 0 );
 
 
     // add renderer domelement

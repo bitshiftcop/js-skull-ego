@@ -8,7 +8,8 @@ body {
   margin:0;
   padding:0;
   overflow:hidden;
-  background-color:#000;
+  background:#000 url('../images/blackmarmer.jpg') no-repeat center center;
+  background-size:cover;
 
   text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
   text-rendering: optimizeLegibility !important;
@@ -79,6 +80,19 @@ body {
   }
 }
 
+#vignette {
+  background-color:rgba(255, 0, 0, 0.25);
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:50;
+  background:url('../images/vignette.png') no-repeat center center;
+  background-size:cover;
+  pointer-events:none;
+}
+
 #rich-content, .no-advanced-webgl #rich-content {
   visibility:hidden;
 
@@ -110,4 +124,9 @@ body {
   .webgl & {
     display:none;
   }
+}
+
+// dat gui
+.dg.ac {
+  z-index:1000 !important;
 }

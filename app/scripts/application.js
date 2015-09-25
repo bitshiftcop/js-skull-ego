@@ -25,9 +25,13 @@ function Application( options ) {
   // colors
   this.activeColorScheme = null;
   this.colorSchemes = [
-    { film: 0x4d00a7, wire: 0x00b3ff, ego: 0xff8700 }, // purple, light blue, orange
-    { film: 0xe85f00, wire: 0x0000ff, ego: 0xffffff }, // orange, blue, white
-    { film: 0x18cf00, wire: 0x6900ff, ego: 0xd2ff00 }  // geen, purple, yellow-greenish
+    { film: 0x4d00a7, wire: 0x00b3ff, ego: 0xffffff },
+
+    { film: 0xb3005f, wire: 0xfff000, ego: 0xffffff },
+
+    { film: 0x1400ac, wire: 0x0096ff, ego: 0xffffff },
+
+    { film: 0x18cf00, wire: 0x6900ff, ego: 0xffffff }
   ];
 
   // wait for dom ready event
