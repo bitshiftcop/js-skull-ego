@@ -42,7 +42,7 @@ Application.prototype = {
   init: function() {
 
     if (!Detector.webgl) {
-      $('html').addClass('no-advanced-webgl');
+      $('html').addClass('detector-no-webgl');
       return;
     }
 

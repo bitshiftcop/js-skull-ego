@@ -154,7 +154,7 @@ Scene.prototype = {
 
 
     // renderer
-    this.renderer = new THREE.WebGLRenderer( { antialias: false, alpha: true } );
+    this.renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
     this.renderer.setPixelRatio( window.devicePixelRatio );
     this.renderer.setSize( window.innerWidth, window.innerHeight );
     this.renderer.setClearColor( this.CLEAR_COLOR, 0 );
