@@ -25,6 +25,12 @@ body {
   -webkit-font-smoothing: antialiased !important;
 }
 
+#rich-content {
+  .detector-no-webgl & {
+    display:none;
+  }
+}
+
 #info-layer {
   position:absolute;
   top:0;
@@ -100,39 +106,6 @@ body {
   background:url('../images/vignette.png') no-repeat center center;
   background-size:cover;
   pointer-events:none;
-}
-
-#rich-content, .no-advanced-webgl #rich-content {
-  visibility:hidden;
-
-  .webgl & {
-    visibility:visible;
-  }
-}
-
-.no-advanced-webgl #not-supported {
-  background-color:#151515;
-  color:#fff;
-  font-size:20px;
-  font-style:italic;
-  font-weight:100;
-  left:50%;
-  line-height:1.8;
-  margin-left:-160px;
-  margin-top:-20px;
-  padding:20px;
-  position:absolute;
-  text-align:center;
-  top:50%;
-  width:320px;
-
-  a, a:visited, a:hover, a:link {
-    color:#fff;
-  }
-
-  .webgl & {
-    display:none;
-  }
 }
 
 // dat gui

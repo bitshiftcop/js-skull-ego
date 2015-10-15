@@ -2,13 +2,12 @@
   "name": "js-ego-machine",
   "private": true,
   "dependencies": {
-    "buzz": "~1.1.10",        // keep buzz first, build & minify problems
+    "buzz": "~1.1.10",
     "jquery": "~2.1.4",
     "modernizr": "~2.8.1",
     "underscore": "~1.8.3",
     "threejs": "*",
     "stats.js": "*",
-    "dat-gui": "~0.5.1",
     "gsap": "~1.18.0",
     "threex.universalloader": "*",
     "threex.windowresize": "*",
@@ -19,8 +18,7 @@
       "main": "build/dat.gui.js"
     }
   },
-  "resolutions": {
-    "modernizr": "~3.0.0",
-    "gsap": "~1.18.0"
+  "devDependencies": {
+    "dat-gui": "~0.5.1"
   }
 }

@@ -93,7 +93,7 @@ Application.prototype = {
     this.infoLayer.triggerNextInfo();
 
     // add mouse move listener
-    $('body').mousemove( function() {
+    $(window).mousemove( function(event) {
       event.preventDefault();
       this.scene.mousemove( event );
       this.infoLayer.mousemove( event );
