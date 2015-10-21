@@ -1,5 +1,5 @@
 {
-  "name": "js-ego-machine",
+  "name": "threejs-ego",
   "private": true,
   "dependencies": {
     "buzz": "~1.1.10",
