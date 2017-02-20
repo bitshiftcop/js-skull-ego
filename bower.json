@@ -6,12 +6,12 @@
     "jquery": "~2.1.4",
     "modernizr": "~2.8.1",
     "underscore": "~1.8.3",
-    "threejs": "*",
     "stats.js": "*",
     "gsap": "~1.18.0",
     "threex.universalloader": "*",
     "threex.windowresize": "*",
-    "threex.objcoord": "*"
+    "threex.objcoord": "*",
+    "three.js": "threejs#r71"
   },
   "overrides": {
     "dat-gui": {
